@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>test for javascript asynchronous</title>
+	</head>
+	<body>
+		<div id="test"></div>
+		<script>
+			var testArray = new Array();
+			testArray[0] = 1;
+			
+			// print();
+			function print(delay, message) {
+			    return new Promise(function (resolve, reject) {
+			        setTimeout(function () {
+			            console.log(message);
+			            resolve();
+			        }, delay);
+			    });
+			}
+			// print(1000, "First").then(function () {
+			//     return print(4000, "Second");
+			// }).then(function () {
+			//     print(3000, "Third");
+			// });
+			
+			var div = document.getElementById('test');
+
+			var test =new Promise(function(resolve, reject){
+					setTimeout(function(){ 
+						div.innerHTML += testArray[0] + "<br>" 
+						testArray[0] += 1;
+						resolve();
+					}, 1000);
+				}).then(function(){
+					div.innerHTML += testArray[0] + "<br>";
+					testArray[0] += 1;
+				}).then(function(){
+					div.innerHTML += testArray[0] + "<br>";
+				});
+			
+		</script>
+	</body>
+</html>

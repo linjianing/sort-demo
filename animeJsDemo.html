@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>sort movie generate</title>
+		<script type="text/javascript" src="anime-master/lib/anime.min.js"></script> 
+		<style type="text/css">
+			.flex-container{
+				display: -webkit-flex;
+				display: flex;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-align-items: flex-end;
+				align-items: flex-end;
+				width: 1024;
+				height: 768;
+			}
+			.array-element{
+				text-align: center;
+				border-radius: 25px;
+				padding: 20px;
+				margin: 0.625rem;				
+			}
+			.before-sort{
+				background-color: #66ffff;
+			}
+			.being-sort{
+				background-color: #66ff66;
+			}
+			.after-sort{
+				background-color: #ffcc66;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="flex-container" id="movieArea">
+			<!-- <div class="being-sort" style="width: 50px; height: 50px;">#</div> -->
+		</div>
+		<script>
+			// pixel as basic unit
+			var total_width = 1024;   
+			var total_height = 768;
+
+			var mySortMovie = document.getElementById("movieArea");
+			
+			// array need to be sort and show process
+			var array = new Array();
+			array[0] = 10;
+			array[1] = 9;
+			array[2] = 7;
+			
+			var x_position = new Array();
+			var max_value = Number.MIN_SAFE_INTEGER;
+			// document.write(max_value + '<br>' + min_value + '<br>')
+			for(let i = 0; i < array.length; i++){
+				max_value = array[i] > max_value ? array[i] : max_value;
+			}
+			
+			var px_width = total_width / (array.length+1);			
+			// normalize and generalize correponding div
+			for(let i = 0; i < array.length; i++){
+				
+				var px_height = total_height * array[i] / max_value;
+				
+				var node = document.createElement("div")
+				var text = document.createTextNode(array[i])
+				node.appendChild(text)
+				node.style.width = px_width + "px";
+				node.style.height = px_height + "px";
+				node.classList.add("before-sort");
+				node.classList.add("array-element");
+				node.id = String(array[i]);
+				mySortMovie.appendChild(node);
+			}
+			
+			for(let i = 0; i < array.length; i++){
+				x_position[i] = document.getElementById(String(array[i])).offsetLeft;
+				console.log(x_position[i]);
+			}
+			
+			var move_forward = anime.timeline();
+			var move_backward = anime.timeline();
+			
+			function showArrayPosition(){
+				for(let i = 0; i < array.length; i++){
+					console.log(array[i] + "的x轴值" + document.getElementById(String(array[i])).offsetLeft);
+				}
+			}
+			
+			// bubble sort
+			for(let i = 0; i < array.length-1; i++){
+				for(let j = array.length; j > i; j--){
+					if(array[j]<array[j-1]){						
+						showArrayPosition();
+						let ele_pre = document.getElementById(String(array[j-1]));
+						let ele_aft = document.getElementById(String(array[j]));
+						var translate_distance = x_position[j]-x_position[j-1];
+						move_forward.add({
+							targets: ele_pre,
+							translateX: translate_distance,
+							delay: 500,
+							duration: 3000
+						});
+						anime.set(ele_pre, {"left": x_position[j]});
+						move_backward.add({
+							targets: ele_aft,
+							translateX: -translate_distance,
+							delay: 500,
+							duration: 3000
+						});
+						anime.set(ele_aft, {"left": x_position[j-1]});
+						let tmp = array[j]; array[j]=array[j-1]; array[j-1]=tmp;
+					}
+				}
+			}
+
+		</script>
+	</body>
+</html>
