@@ -23,6 +23,8 @@
 			array[2] = 14;
 			array[3] = 10;
 			array[4] = 9;
+			// 定义需要进行演示的算法 可选项 1、冒泡； 2、选择； 3、插入
+			algorithm = "插入";  
 		/******************************************************************/
 			
 		/**************用户可以根据自己的需要对动画元素进行修改*****************/
@@ -56,7 +58,19 @@
 					var text_ctx = text_canvas.getContext('2d');
 					text_ctx.font = font;
 					// 冒泡排序
-					bubbleSort(shape_ctx, text_ctx, array);
+					switch(algorithm){
+						case "冒泡":
+							bubbleSort(shape_ctx, text_ctx, array);
+							break;
+						case "选择":
+							selectionSort(shape_ctx, text_ctx, array);
+							break;
+						case "插入":
+							insertionSort(shape_ctx, text_ctx, array);
+							break;
+						default:
+							bubbleSort(shape_ctx, text_ctx, array);
+					}
 					// 选择排序
 					// selectionSort(shape_ctx, text_ctx, array);
 					// 插入排序
